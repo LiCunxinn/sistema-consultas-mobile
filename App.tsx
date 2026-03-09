@@ -1,32 +1,63 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-
+import React, { useState } from "react";
+import { View, Text, StyleSheet, Button } from "react-native";
+type Consulta = {
+  id: number;
+  paciente: string;
+  medico: string;
+  data: string;
+  status: "agendada" | "confirmada" | "cancelada" | "realizada";
+};
 export default function App() {
+  const [consulta, setConsulta] = useState<Consulta>({
+    id: 1,
+    paciente: "Carlos Andrade",
+    medico: "Dr. Roberto Silva",
+    data: "28/02/2026",
+    status: "agendada",
+  });
+  function confirmarConsulta() {
+    setConsulta({
+      ...consulta,
+      status: "confirmada",
+    });
+  }
   return (
     <View style={styles.container}>
-      <Text style={styles.titulo}>Kojima o que foi que você fez?!</Text>
-      <Text style={styles.subtitulo}>Impressionante demais essa cena!</Text>
-      <StatusBar style="auto" />
+      <Text style={styles.titulo}>Sistema de Consultas</Text>
+      <View style={styles.card}>
+        <Text>Paciente: {consulta.paciente}</Text>
+        <Text>Médico: {consulta.medico}</Text>
+        <Text>Data: {consulta.data}</Text>
+        <Text>Status: {consulta.status}</Text>
+        {consulta.status === "agendada" && (
+          <View style={styles.botao}>
+            <Button title="Confirmar Consulta" onPress={confirmarConsulta} />
+          </View>
+        )}
+        </View>
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#07edf5',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#0d6f7c",
+    alignItems: "center",
+    justifyContent: "center",
   },
-
   titulo: {
-    color: '#023a23',
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 20,
   },
-
-  subtitulo: {
-    color: '#610404',
-    fontSize: 15,
-  }
+  card: {
+    width: "80%",
+    backgroundColor: "#00b6ce",
+    padding: 20,
+    borderWidth: 1,
+    borderRadius: 8,
+  },
+  botao: {
+    marginTop: 60,
+  },
 });
